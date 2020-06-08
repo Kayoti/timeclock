@@ -96,12 +96,13 @@
 //
 // echo "</tr></table>\n";
 ?>
+<div class="main-panel">
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
   <div class="container-fluid">
     <div class="navbar-wrapper">
 
-      <a class="navbar-brand" href="index.php"><img border=0 src='<?php echo $logo; ?>'></a>
+      <a class="navbar-brand" href="index.php"></a>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
       <span class="sr-only">Toggle navigation</span>

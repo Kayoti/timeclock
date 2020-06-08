@@ -10,8 +10,9 @@ if (!isset($_GET['printer_friendly'])) {
         $set_logout = "1";
     }
 
+    include 'sidenav.php';
     include 'topmain.php';
-    include 'leftmain.php';
+    //include 'leftmain.php';
 }
 
 
