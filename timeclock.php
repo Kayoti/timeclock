@@ -14,7 +14,7 @@ if (!isset($_GET['printer_friendly'])) {
     include 'leftmain.php';
 }
 
-echo "<title>$title</title>\n";
+
 $current_page = "timeclock.php";
 
 if (!isset($_GET['printer_friendly'])) {
@@ -177,7 +177,7 @@ if (!isset($_GET['printer_friendly'])) {
     echo "              <tr>\n";
 }
 
-echo "                <td nowrap style='font-size:9px;color:#000000;padding-left:10px;'>$report_name&nbsp;&nbsp;---->&nbsp;&nbsp;As of: $tclock_time, 
+echo "                <td nowrap style='font-size:9px;color:#000000;padding-left:10px;'>$report_name&nbsp;&nbsp;---->&nbsp;&nbsp;As of: $tclock_time,
                     $tclock_date</td></tr>\n";
 echo "            </table>\n";
 include 'display.php';
@@ -187,4 +187,3 @@ if (!isset($_GET['printer_friendly'])) {
 }
 
 ?>
-
