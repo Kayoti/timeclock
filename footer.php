@@ -242,5 +242,5 @@ echo "</table>\n";
 </script>
 </div><!-- end of div main-panel -->
 </div><!-- end of div wrapper -->
-</body>;
-</html>;
+</body>
+</html>

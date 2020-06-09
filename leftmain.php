@@ -1,6 +1,6 @@
 <?php
 
-include 'config.inc.php';
+//include 'config.inc.php';
 
 $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
@@ -239,144 +239,144 @@ if ($links == "none") {
 }
 
 // display form to submit signin/signout information //
-
-echo "        <form name='timeclock' action='$self' method='post'>\n";
-
-if ($links == "none") {
-    echo "        <tr><td height=7></td></tr>\n";
-} else {
-    echo "        <tr><td height=20></td></tr>\n";
-}
-
-echo "        <tr><td class=title_underline height=4 align=left valign=middle style='padding-left:10px;'>Please sign in below:</td></tr>\n";
-echo "        <tr><td height=7></td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>Name:</td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
-
-// query to populate dropdown with employee names //
-
-if ($show_display_name == "yes") {
-
-    $query = "select displayname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
-    $emp_name_result = mysqli_query($db,$query);
-    echo "              <select name='left_displayname' tabindex=1>\n";
-    echo "              <option value =''>...</option>\n";
-
-    while ($row = mysqli_fetch_array($emp_name_result)) {
-
-        $abc = stripslashes("" . $row['displayname'] . "");
-
-        if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $abc)) {
-            echo "              <option selected>$abc</option>\n";
-        } else {
-            echo "              <option>$abc</option>\n";
-        }
-
-    }
-
-    echo "              </select></td></tr>\n";
-    mysqli_free_result($emp_name_result);
-    echo "        <tr><td height=7></td></tr>\n";
-
-} else {
-
-    $query = "select empfullname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
-    $emp_name_result = mysqli_query($db,$query);
-    echo "              <select name='left_fullname' tabindex=1>\n";
-    echo "              <option value =''>...</option>\n";
-
-    while ($row = mysqli_fetch_array($emp_name_result)) {
-
-        $def = stripslashes("" . $row['empfullname'] . "");
-        if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $def)) {
-            echo "              <option selected>$def</option>\n";
-        } else {
-            echo "              <option>$def</option>\n";
-        }
-
-    }
-
-    echo "              </select></td></tr>\n";
-    mysqli_free_result($emp_name_result);
-    echo "        <tr><td height=7></td></tr>\n";
-}
-
-// determine whether to use encrypted passwords or not //
-
-if ($use_passwd == "yes") {
-    echo "        <tr><td height=4 align=left valign=middle class=misc_items>Password:</td></tr>\n";
-    echo "        <tr><td height=4 align=left valign=middle class=misc_items>";
-    echo "<input type='password' name='employee_passwd' maxlength='25' size='17' tabindex=2></td></tr>\n";
-    echo "        <tr><td height=7></td></tr>\n";
-}
-
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>In/Out:</td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
-
-// query to populate dropdown with punchlist items //
-
-$query = "select punchitems from " . $db_prefix . "punchlist";
-$punchlist_result = mysqli_query($db,$query);
-
-echo "              <select name='left_inout' tabindex=3>\n";
-echo "              <option value =''>...</option>\n";
-
-while ($row = mysqli_fetch_array($punchlist_result)) {
-    echo "              <option>" . $row['punchitems'] . "</option>\n";
-}
-
-echo "              </select></td></tr>\n";
-mysqli_free_result($punchlist_result);
-
-echo "        <tr><td height=7></td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>Notes:</td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>";
-echo "<input type='text' name='left_notes' maxlength='250' size='17' tabindex=4></td></tr>\n";
-
-if (!isset($_COOKIE['remember_me'])) {
-    echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=left
-                    class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='remember_me' value='1'></td></tr>
-                    </table></td><tr>\n";
-} elseif (isset($_COOKIE['remember_me'])) {
-    echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left
-                    class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='reset_cookie' value='1'></td></tr>
-                    </table></td><tr>\n";
-}
-
-echo "        <tr><td height=7></td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items><input type='submit' name='submit_button' value='Submit' align='center'
-                tabindex=6></td></tr></form>\n";
-
-if ($display_weather == "yes") {
-    echo "        <tr><td height=25 align=left valign=bottom class=misc_items><font color='00589C'><b><u>Weather Conditions:</u></b></font></td></tr>\n";
-    echo "        <tr><td height=7></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items><b>$city</b></td></tr>\n";
-    echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Currently: $temp&#176;</td></tr>\n";
-    echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Feels Like: $feelslike&#176;</td></tr>\n";
-    echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Skies: $cloud_cover</td></tr>\n";
-    echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Wind: $wind_dir $wind$mph</td></tr>\n";
-    echo "        <tr><td height=4></td></tr>\n";
-
-    if ($humidity == 'None') {
-        echo "        <tr><td align=left valign=middle class=misc_items>Humidity: $humidity</td></tr>\n";
-    } else {
-        echo "        <tr><td align=left valign=middle class=misc_items>Humidity: $humidity%</td></tr>\n";
-    }
-
-    echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Visibility: $visibility</td></tr>\n";
-    echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items><font color='FF0000'>Last Updated: $time</font></td></tr>\n";
-}
-
-echo "        <tr><td height=90%></td></tr>\n";
-echo "      </table></td>\n";
+//
+// echo "        <form name='timeclock' action='$self' method='post'>\n";
+//
+// if ($links == "none") {
+//     echo "        <tr><td height=7></td></tr>\n";
+// } else {
+//     echo "        <tr><td height=20></td></tr>\n";
+// }
+//
+// echo "        <tr><td class=title_underline height=4 align=left valign=middle style='padding-left:10px;'>Please sign in below:</td></tr>\n";
+// echo "        <tr><td height=7></td></tr>\n";
+// echo "        <tr><td height=4 align=left valign=middle class=misc_items>Name:</td></tr>\n";
+// echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
+//
+// // query to populate dropdown with employee names //
+//
+// if ($show_display_name == "yes") {
+//
+//     $query = "select displayname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
+//     $emp_name_result = mysqli_query($db,$query);
+//     echo "              <select name='left_displayname' tabindex=1>\n";
+//     echo "              <option value =''>...</option>\n";
+//
+//     while ($row = mysqli_fetch_array($emp_name_result)) {
+//
+//         $abc = stripslashes("" . $row['displayname'] . "");
+//
+//         if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $abc)) {
+//             echo "              <option selected>$abc</option>\n";
+//         } else {
+//             echo "              <option>$abc</option>\n";
+//         }
+//
+//     }
+//
+//     echo "              </select></td></tr>\n";
+//     mysqli_free_result($emp_name_result);
+//     echo "        <tr><td height=7></td></tr>\n";
+//
+// } else {
+//
+//     $query = "select empfullname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
+//     $emp_name_result = mysqli_query($db,$query);
+//     echo "              <select name='left_fullname' tabindex=1>\n";
+//     echo "              <option value =''>...</option>\n";
+//
+//     while ($row = mysqli_fetch_array($emp_name_result)) {
+//
+//         $def = stripslashes("" . $row['empfullname'] . "");
+//         if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $def)) {
+//             echo "              <option selected>$def</option>\n";
+//         } else {
+//             echo "              <option>$def</option>\n";
+//         }
+//
+//     }
+//
+//     echo "              </select></td></tr>\n";
+//     mysqli_free_result($emp_name_result);
+//     echo "        <tr><td height=7></td></tr>\n";
+// }
+//
+// // determine whether to use encrypted passwords or not //
+//
+// if ($use_passwd == "yes") {
+//     echo "        <tr><td height=4 align=left valign=middle class=misc_items>Password:</td></tr>\n";
+//     echo "        <tr><td height=4 align=left valign=middle class=misc_items>";
+//     echo "<input type='password' name='employee_passwd' maxlength='25' size='17' tabindex=2></td></tr>\n";
+//     echo "        <tr><td height=7></td></tr>\n";
+// }
+//
+// echo "        <tr><td height=4 align=left valign=middle class=misc_items>In/Out:</td></tr>\n";
+// echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
+//
+// // query to populate dropdown with punchlist items //
+//
+// $query = "select punchitems from " . $db_prefix . "punchlist";
+// $punchlist_result = mysqli_query($db,$query);
+//
+// echo "              <select name='left_inout' tabindex=3>\n";
+// echo "              <option value =''>...</option>\n";
+//
+// while ($row = mysqli_fetch_array($punchlist_result)) {
+//     echo "              <option>" . $row['punchitems'] . "</option>\n";
+// }
+//
+// echo "              </select></td></tr>\n";
+// mysqli_free_result($punchlist_result);
+//
+// echo "        <tr><td height=7></td></tr>\n";
+// echo "        <tr><td height=4 align=left valign=middle class=misc_items>Notes:</td></tr>\n";
+// echo "        <tr><td height=4 align=left valign=middle class=misc_items>";
+// echo "<input type='text' name='left_notes' maxlength='250' size='17' tabindex=4></td></tr>\n";
+//
+// if (!isset($_COOKIE['remember_me'])) {
+//     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
+//                   <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=left
+//                     class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='remember_me' value='1'></td></tr>
+//                     </table></td><tr>\n";
+// } elseif (isset($_COOKIE['remember_me'])) {
+//     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
+//                   <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left
+//                     class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='reset_cookie' value='1'></td></tr>
+//                     </table></td><tr>\n";
+// }
+//
+// echo "        <tr><td height=7></td></tr>\n";
+// echo "        <tr><td height=4 align=left valign=middle class=misc_items><input type='submit' name='submit_button' value='Submit' align='center'
+//                 tabindex=6></td></tr></form>\n";
+//
+// if ($display_weather == "yes") {
+//     echo "        <tr><td height=25 align=left valign=bottom class=misc_items><font color='00589C'><b><u>Weather Conditions:</u></b></font></td></tr>\n";
+//     echo "        <tr><td height=7></td></tr>\n";
+//     echo "        <tr><td align=left valign=middle class=misc_items><b>$city</b></td></tr>\n";
+//     echo "        <tr><td height=4></td></tr>\n";
+//     echo "        <tr><td align=left valign=middle class=misc_items>Currently: $temp&#176;</td></tr>\n";
+//     echo "        <tr><td height=4></td></tr>\n";
+//     echo "        <tr><td align=left valign=middle class=misc_items>Feels Like: $feelslike&#176;</td></tr>\n";
+//     echo "        <tr><td height=4></td></tr>\n";
+//     echo "        <tr><td align=left valign=middle class=misc_items>Skies: $cloud_cover</td></tr>\n";
+//     echo "        <tr><td height=4></td></tr>\n";
+//     echo "        <tr><td align=left valign=middle class=misc_items>Wind: $wind_dir $wind$mph</td></tr>\n";
+//     echo "        <tr><td height=4></td></tr>\n";
+//
+//     if ($humidity == 'None') {
+//         echo "        <tr><td align=left valign=middle class=misc_items>Humidity: $humidity</td></tr>\n";
+//     } else {
+//         echo "        <tr><td align=left valign=middle class=misc_items>Humidity: $humidity%</td></tr>\n";
+//     }
+//
+//     echo "        <tr><td height=4></td></tr>\n";
+//     echo "        <tr><td align=left valign=middle class=misc_items>Visibility: $visibility</td></tr>\n";
+//     echo "        <tr><td height=4></td></tr>\n";
+//     echo "        <tr><td align=left valign=middle class=misc_items><font color='FF0000'>Last Updated: $time</font></td></tr>\n";
+// }
+//
+// echo "        <tr><td height=90%></td></tr>\n";
+// echo "      </table></td>\n";
 
 if ($request == 'POST') {
 
@@ -408,61 +408,61 @@ if ($request == 'POST') {
     if ($show_display_name == "yes") {
 
         if (!$displayname && !$inout) {
-            echo "    <td align=left class=right_main scope=col>\n";
-            echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-            echo "        <tr class=right_main_text>\n";
-            echo "          <td valign=top>\n";
+            // echo "    <td align=left class=right_main scope=col>\n";
+            // echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
+            // echo "        <tr class=right_main_text>\n";
+            // echo "          <td valign=top>\n";
             echo "<br />\n";
             echo "You have not chosen a username or a status. Please try again.\n";
-            include 'footer.php';
+            //include 'footer.php';
             exit;
         }
 
         if (!$displayname) {
-            echo "    <td align=left class=right_main scope=col>\n";
-            echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-            echo "        <tr class=right_main_text>\n";
-            echo "          <td valign=top>\n";
+            // echo "    <td align=left class=right_main scope=col>\n";
+            // echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
+            // echo "        <tr class=right_main_text>\n";
+            // echo "          <td valign=top>\n";
             echo "<br />\n";
             echo "You have not chosen a username. Please try again.\n";
-            include 'footer.php';
+            //include 'footer.php';
             exit;
         }
 
     } elseif ($show_display_name == "no") {
 
         if (!$fullname && !$inout) {
-            echo "    <td align=left class=right_main scope=col>\n";
-            echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-            echo "        <tr class=right_main_text>\n";
-            echo "          <td valign=top>\n";
+            // echo "    <td align=left class=right_main scope=col>\n";
+            // echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
+            // echo "        <tr class=right_main_text>\n";
+            // echo "          <td valign=top>\n";
             echo "<br />\n";
             echo "You have not chosen a username or a status. Please try again.\n";
-            include 'footer.php';
+            //include 'footer.php';
             exit;
         }
 
         if (!$fullname) {
-            echo "    <td align=left class=right_main scope=col>\n";
-            echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-            echo "        <tr class=right_main_text>\n";
-            echo "          <td valign=top>\n";
+            // echo "    <td align=left class=right_main scope=col>\n";
+            // echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
+            // echo "        <tr class=right_main_text>\n";
+            // echo "          <td valign=top>\n";
             echo "<br />\n";
             echo "You have not chosen a username. Please try again.\n";
-            include 'footer.php';
+            //include 'footer.php';
             exit;
         }
 
     }
 
     if (!$inout) {
-        echo "    <td align=left class=right_main scope=col>\n";
-        echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-        echo "        <tr class=right_main_text>\n";
-        echo "          <td valign=top>\n";
+        // echo "    <td align=left class=right_main scope=col>\n";
+        // echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
+        // echo "        <tr class=right_main_text>\n";
+        // echo "          <td valign=top>\n";
         echo "<br />\n";
         echo "You have not chosen a status. Please try again.\n";
-        include 'footer.php';
+        //include 'footer.php';
         exit;
     }
 
@@ -556,10 +556,10 @@ if ($request == 'POST') {
 
         } else {
 
-            echo "    <td align=left class=right_main scope=col>\n";
-            echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-            echo "        <tr class=right_main_text>\n";
-            echo "          <td valign=top>\n";
+            // echo "    <td align=left class=right_main scope=col>\n";
+            // echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
+            // echo "        <tr class=right_main_text>\n";
+            // echo "          <td valign=top>\n";
             echo "<br />\n";
 
             if ($show_display_name == "yes") {
@@ -569,7 +569,7 @@ if ($request == 'POST') {
             }
 
             echo "You have entered the wrong password for $strip_fullname. Please try again.";
-            include 'footer.php';
+            //include 'footer.php';
             exit;
         }
 
