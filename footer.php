@@ -63,6 +63,22 @@ echo "</table>\n";
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="./assets/demo/demo.js"></script>
 <script>
+$("#submit_button").on('click', '', function(e) {
+  $.ajax( {
+              url: "./leftmain.php", // API Call
+              type: "POST",
+              crossDomain: true,
+              data: $( '#timeclockform' ).serialize(),
+              success: function ( result ) {
+                  $( '#errormessage' ).html(result);
+                  //console.log( result );
+              },
+              error: function ( xhr, status, error ) {
+              }
+          } );
+});
+</script>
+<script>
   $(document).ready(function() {
     $().ready(function() {
       $sidebar = $('.sidebar');

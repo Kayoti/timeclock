@@ -25,13 +25,13 @@ if (!isset($_GET['printer_friendly'])) {
     echo "          <td valign=top>\n";
 }
 
-include 'leftmain.php';
+//include 'leftmain.php';
 // display form to submit signin/signout information //
  ?>
 
  <div class="row">
       <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-        <form class="form" method="" action="">
+        <form class="form" name='timeclock' id="timeclockform" method='post'>
           <div class="card card-login card-hidden">
             <div class="card-header card-header-primary text-center">
               <h4 class="card-title">Please Sign-In Below</h4>
@@ -176,12 +176,17 @@ include 'leftmain.php';
               </div>
             </span>
 
-            </div>
             <div class="card-footer justify-content-center">
-              <input  type="submit" name="submit_button" value="Submit" class="btn btn-rose btn-link btn-lg"></input>
+
+              <button id="submit_button" name="submit_button" class="btn btn-rose btn-link btn-lg"  type="button">Submit</button>
             </div>
           </div>
+
+            </div>
+
+          </div>
         </form>
+        <div id="errormessage" class="col-md-12">
       </div>
     </div>
 <?php

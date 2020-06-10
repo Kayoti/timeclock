@@ -1,7 +1,17 @@
 <?php
 
-//include 'config.inc.php';
+include 'config.inc.php';
 
+// connect to db anc check for correct db version //
+@ $db = mysqli_connect($db_hostname, $db_username, $db_password);
+if (!$db) {
+    echo "Error: Could not connect to the database. Please try again later.";
+    exit;
+}
+mysqli_select_db($db,$db_name);
+if(!isset($connecting_ip)) $connecting_ip="";
+if(!isset($tz_stamp)) $tz_stamp="";
+if(!isset($db_prefix)) $db_prefix="";
 $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
 
@@ -11,19 +21,20 @@ if ($request == 'POST') {
     @$remember_me = $_POST['remember_me'];
     @$reset_cookie = $_POST['reset_cookie'];
     @$fullname = stripslashes($_POST['left_fullname']);
+
     @$displayname = stripslashes($_POST['left_displayname']);
-    if ((isset($remember_me)) && ($remember_me != '1')) {
+    if ($remember_me && $remember_me != '1') {
         echo "Something is fishy here.\n";
         exit;
     }
-    if ((isset($reset_cookie)) && ($reset_cookie != '1')) {
+    if ($reset_cookie && $reset_cookie != '1') {
         echo "Something is fishy here.\n";
         exit;
     }
 
     // begin post validation //
 
-    if ($show_display_name == "yes") {
+    if (isset($show_display_name) == "yes") {
 
         if (isset($displayname)) {
             $displayname = addslashes($displayname);
@@ -40,7 +51,7 @@ if ($request == 'POST') {
             $displayname = stripslashes($displayname);
         }
 
-    } elseif ($show_display_name == "no") {
+    } elseif (isset($show_display_name) == "no") {
 
         if (isset($fullname)) {
             $fullname = addslashes($fullname);
@@ -76,7 +87,7 @@ if ($request == 'POST') {
     ob_end_flush();
 }
 
-if ($display_weather == 'yes') {
+if (isset($display_weather) == 'yes') {
 
     include 'phpweather.php';
     $metar = get_metar($db,$db_prefix,$metar);
@@ -219,187 +230,62 @@ if ($display_weather == 'yes') {
     }
 }
 
-echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
-echo "  <tr valign=top>\n";
-echo "    <td class=left_main width=170 align=left scope=col>\n";
-echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
+// echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
+// echo "  <tr valign=top>\n";
+// echo "    <td class=left_main width=170 align=left scope=col>\n";
+// echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
 
 // display links in top left of each page //
 
-if ($links == "none") {
+if (isset($links) == "none") {
     echo "        <tr></tr>\n";
 } else {
     echo "        <tr><td class=left_rows height=7 align=left valign=middle></td></tr>\n";
 
-    for ($x = 0; $x < count($display_links); $x++) {
+    for ($x = 0; $x < is_array(count($display_links)); $x++) {
         echo "        <tr><td class=left_rows height=18 align=left valign=middle><a class=admin_headings href='$links[$x]' target='_new'>$display_links[$x]</a></td>
                       </tr>\n";
     }
 
 }
-
-// display form to submit signin/signout information //
-//
-// echo "        <form name='timeclock' action='$self' method='post'>\n";
-//
-// if ($links == "none") {
-//     echo "        <tr><td height=7></td></tr>\n";
-// } else {
-//     echo "        <tr><td height=20></td></tr>\n";
-// }
-//
-// echo "        <tr><td class=title_underline height=4 align=left valign=middle style='padding-left:10px;'>Please sign in below:</td></tr>\n";
-// echo "        <tr><td height=7></td></tr>\n";
-// echo "        <tr><td height=4 align=left valign=middle class=misc_items>Name:</td></tr>\n";
-// echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
-//
-// // query to populate dropdown with employee names //
-//
-// if ($show_display_name == "yes") {
-//
-//     $query = "select displayname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
-//     $emp_name_result = mysqli_query($db,$query);
-//     echo "              <select name='left_displayname' tabindex=1>\n";
-//     echo "              <option value =''>...</option>\n";
-//
-//     while ($row = mysqli_fetch_array($emp_name_result)) {
-//
-//         $abc = stripslashes("" . $row['displayname'] . "");
-//
-//         if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $abc)) {
-//             echo "              <option selected>$abc</option>\n";
-//         } else {
-//             echo "              <option>$abc</option>\n";
-//         }
-//
-//     }
-//
-//     echo "              </select></td></tr>\n";
-//     mysqli_free_result($emp_name_result);
-//     echo "        <tr><td height=7></td></tr>\n";
-//
-// } else {
-//
-//     $query = "select empfullname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
-//     $emp_name_result = mysqli_query($db,$query);
-//     echo "              <select name='left_fullname' tabindex=1>\n";
-//     echo "              <option value =''>...</option>\n";
-//
-//     while ($row = mysqli_fetch_array($emp_name_result)) {
-//
-//         $def = stripslashes("" . $row['empfullname'] . "");
-//         if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $def)) {
-//             echo "              <option selected>$def</option>\n";
-//         } else {
-//             echo "              <option>$def</option>\n";
-//         }
-//
-//     }
-//
-//     echo "              </select></td></tr>\n";
-//     mysqli_free_result($emp_name_result);
-//     echo "        <tr><td height=7></td></tr>\n";
-// }
-//
-// // determine whether to use encrypted passwords or not //
-//
-// if ($use_passwd == "yes") {
-//     echo "        <tr><td height=4 align=left valign=middle class=misc_items>Password:</td></tr>\n";
-//     echo "        <tr><td height=4 align=left valign=middle class=misc_items>";
-//     echo "<input type='password' name='employee_passwd' maxlength='25' size='17' tabindex=2></td></tr>\n";
-//     echo "        <tr><td height=7></td></tr>\n";
-// }
-//
-// echo "        <tr><td height=4 align=left valign=middle class=misc_items>In/Out:</td></tr>\n";
-// echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
-//
-// // query to populate dropdown with punchlist items //
-//
-// $query = "select punchitems from " . $db_prefix . "punchlist";
-// $punchlist_result = mysqli_query($db,$query);
-//
-// echo "              <select name='left_inout' tabindex=3>\n";
-// echo "              <option value =''>...</option>\n";
-//
-// while ($row = mysqli_fetch_array($punchlist_result)) {
-//     echo "              <option>" . $row['punchitems'] . "</option>\n";
-// }
-//
-// echo "              </select></td></tr>\n";
-// mysqli_free_result($punchlist_result);
-//
-// echo "        <tr><td height=7></td></tr>\n";
-// echo "        <tr><td height=4 align=left valign=middle class=misc_items>Notes:</td></tr>\n";
-// echo "        <tr><td height=4 align=left valign=middle class=misc_items>";
-// echo "<input type='text' name='left_notes' maxlength='250' size='17' tabindex=4></td></tr>\n";
-//
-// if (!isset($_COOKIE['remember_me'])) {
-//     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-//                   <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=left
-//                     class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='remember_me' value='1'></td></tr>
-//                     </table></td><tr>\n";
-// } elseif (isset($_COOKIE['remember_me'])) {
-//     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-//                   <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left
-//                     class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='reset_cookie' value='1'></td></tr>
-//                     </table></td><tr>\n";
-// }
-//
-// echo "        <tr><td height=7></td></tr>\n";
-// echo "        <tr><td height=4 align=left valign=middle class=misc_items><input type='submit' name='submit_button' value='Submit' align='center'
-//                 tabindex=6></td></tr></form>\n";
-//
-// if ($display_weather == "yes") {
-//     echo "        <tr><td height=25 align=left valign=bottom class=misc_items><font color='00589C'><b><u>Weather Conditions:</u></b></font></td></tr>\n";
-//     echo "        <tr><td height=7></td></tr>\n";
-//     echo "        <tr><td align=left valign=middle class=misc_items><b>$city</b></td></tr>\n";
-//     echo "        <tr><td height=4></td></tr>\n";
-//     echo "        <tr><td align=left valign=middle class=misc_items>Currently: $temp&#176;</td></tr>\n";
-//     echo "        <tr><td height=4></td></tr>\n";
-//     echo "        <tr><td align=left valign=middle class=misc_items>Feels Like: $feelslike&#176;</td></tr>\n";
-//     echo "        <tr><td height=4></td></tr>\n";
-//     echo "        <tr><td align=left valign=middle class=misc_items>Skies: $cloud_cover</td></tr>\n";
-//     echo "        <tr><td height=4></td></tr>\n";
-//     echo "        <tr><td align=left valign=middle class=misc_items>Wind: $wind_dir $wind$mph</td></tr>\n";
-//     echo "        <tr><td height=4></td></tr>\n";
-//
-//     if ($humidity == 'None') {
-//         echo "        <tr><td align=left valign=middle class=misc_items>Humidity: $humidity</td></tr>\n";
-//     } else {
-//         echo "        <tr><td align=left valign=middle class=misc_items>Humidity: $humidity%</td></tr>\n";
-//     }
-//
-//     echo "        <tr><td height=4></td></tr>\n";
-//     echo "        <tr><td align=left valign=middle class=misc_items>Visibility: $visibility</td></tr>\n";
-//     echo "        <tr><td height=4></td></tr>\n";
-//     echo "        <tr><td align=left valign=middle class=misc_items><font color='FF0000'>Last Updated: $time</font></td></tr>\n";
-// }
-//
-// echo "        <tr><td height=90%></td></tr>\n";
-// echo "      </table></td>\n";
-
 if ($request == 'POST') {
 
     // signin/signout data passed over from timeclock.php //
 
     $inout = $_POST['left_inout'];
-    $notes = preg_replace("[^[:alnum:] \,\.\?-]", "", strtolower($_POST['left_notes']));
+    $notes = preg_replace("/[^[:alnum:] \\,\.\?-]/", "", strtolower($_POST['left_notes']));
 
     // begin post validation //
 
-    if ($use_passwd == "yes") {
+    if (isset($use_passwd) == "yes") {
+
         $employee_passwd = crypt($_POST['employee_passwd'], 'xy');
+
     }
 
-    $query = "select punchitems from " . $db_prefix . "punchlist";
+    $query = "select punchitems from ".$db_prefix."punchlist";
     $punchlist_result = mysqli_query($db,$query);
 
     while ($row = mysqli_fetch_array($punchlist_result)) {
+
         $tmp_inout = "" . $row['punchitems'] . "";
     }
 
     if (!isset($tmp_inout)) {
-        echo "In/Out Status is not in the database.\n";
+        echo '
+        <div class="alert alert-danger">
+  <div class="container">
+    <div class="alert-icon">
+      <i class="material-icons">error_outline</i>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true"><i class="material-icons">clear</i></span>
+    </button>
+    <b>Error Alert:</b>
+    <p >In/Out Status is not in the database.</p>
+  </div>
+</div>
+        ';
         exit;
     }
 
@@ -413,7 +299,23 @@ if ($request == 'POST') {
             // echo "        <tr class=right_main_text>\n";
             // echo "          <td valign=top>\n";
             echo "<br />\n";
-            echo "You have not chosen a username or a status. Please try again.\n";
+
+            echo '
+            <div class="alert alert-danger">
+      <div class="container">
+        <div class="alert-icon">
+          <i class="material-icons">error_outline</i>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true"><i class="material-icons">clear</i></span>
+        </button>
+        <b>Error Alert:</b>
+        <p >You have not chosen a username or a status. Please try again.</p>
+      </div>
+    </div>
+
+
+            ';
             //include 'footer.php';
             exit;
         }
@@ -424,7 +326,23 @@ if ($request == 'POST') {
             // echo "        <tr class=right_main_text>\n";
             // echo "          <td valign=top>\n";
             echo "<br />\n";
-            echo "You have not chosen a username. Please try again.\n";
+
+            echo '
+            <div class="alert alert-danger">
+      <div class="container">
+        <div class="alert-icon">
+          <i class="material-icons">error_outline</i>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true"><i class="material-icons">clear</i></span>
+        </button>
+        <b>Error Alert:</b>
+        <p >You have not chosen a username. Please try again.</p>
+      </div>
+    </div>
+
+
+            ';
             //include 'footer.php';
             exit;
         }
@@ -437,7 +355,23 @@ if ($request == 'POST') {
             // echo "        <tr class=right_main_text>\n";
             // echo "          <td valign=top>\n";
             echo "<br />\n";
-            echo "You have not chosen a username or a status. Please try again.\n";
+
+            echo '
+            <div class="alert alert-danger">
+      <div class="container">
+        <div class="alert-icon">
+          <i class="material-icons">error_outline</i>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true"><i class="material-icons">clear</i></span>
+        </button>
+        <b>Error Alert:</b>
+        <p >You have not chosen a username or a status. Please try again.</p>
+      </div>
+    </div>
+
+
+            ';
             //include 'footer.php';
             exit;
         }
@@ -448,7 +382,23 @@ if ($request == 'POST') {
             // echo "        <tr class=right_main_text>\n";
             // echo "          <td valign=top>\n";
             echo "<br />\n";
-            echo "You have not chosen a username. Please try again.\n";
+
+            echo '
+            <div class="alert alert-danger">
+      <div class="container">
+        <div class="alert-icon">
+          <i class="material-icons">error_outline</i>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true"><i class="material-icons">clear</i></span>
+        </button>
+        <b>Error Alert:</b>
+        <p >You have not chosen a username. Please try again.</p>
+      </div>
+    </div>
+
+
+            ';
             //include 'footer.php';
             exit;
         }
@@ -461,7 +411,24 @@ if ($request == 'POST') {
         // echo "        <tr class=right_main_text>\n";
         // echo "          <td valign=top>\n";
         echo "<br />\n";
-        echo "You have not chosen a status. Please try again.\n";
+
+
+        echo '
+        <div class="alert alert-danger">
+  <div class="container">
+    <div class="alert-icon">
+      <i class="material-icons">error_outline</i>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true"><i class="material-icons">clear</i></span>
+    </button>
+    <b>Error Alert:</b>
+    <p >You have not chosen a status. Please try again.</p>
+  </div>
+</div>
+
+
+        ';
         //include 'footer.php';
         exit;
     }
@@ -505,23 +472,42 @@ if ($request == 'POST') {
 
         $update_query = "update " . $db_prefix . "employees set tstamp = '" . $tz_stamp . "' where empfullname = '" . $fullname . "'";
         $other_result = mysqli_query($db,$update_query);
+        echo '
+        <div class="alert alert-success">
+      <div class="container">
+      <div class="alert-icon">
+      <i class="material-icons">check</i>
+      </div>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true"><i class="material-icons">clear</i></span>
+      </button>
+      <b></b>
+      <p >You have Successfully set your status to "'.$inout.'"</br>';
+      if($notes!=""){echo "with the following note: ".$notes."</p></div>
+      </div>";}else{
+        echo "</p></div></div>";
+      }
 
-        echo "<head>\n";
-        echo "<meta http-equiv='refresh' content=0;url=index.php>\n";
-        echo "</head>\n";
+
+        // echo "<head>\n";
+        // echo "<meta http-equiv='refresh' content=0;url=index.php>\n";
+        // echo "</head>\n";
 
     } else {
 
         if ($show_display_name == "yes") {
+
             $sel_query = "select empfullname, employee_passwd from " . $db_prefix . "employees where displayname = '" . $displayname . "'";
             $sel_result = mysqli_query($db,$sel_query);
 
             while ($row = mysqli_fetch_array($sel_result)) {
+
                 $tmp_password = "" . $row["employee_passwd"] . "";
                 $fullname = "" . $row["empfullname"] . "";
             }
 
             $fullname = stripslashes($fullname);
+
             $fullname = addslashes($fullname);
 
         } else {
@@ -530,6 +516,7 @@ if ($request == 'POST') {
             $sel_result = mysqli_query($db,$sel_query);
 
             while ($row = mysqli_fetch_array($sel_result)) {
+
                 $tmp_password = "" . $row["employee_passwd"] . "";
             }
 
@@ -549,10 +536,24 @@ if ($request == 'POST') {
 
             $update_query = "update " . $db_prefix . "employees set tstamp = '" . $tz_stamp . "' where empfullname = '" . $fullname . "'";
             $other_result = mysqli_query($db,$update_query);
-
-            echo "<head>\n";
-            echo "<meta http-equiv='refresh' content=0;url=index.php>\n";
-            echo "</head>\n";
+            echo '
+            <div class="alert alert-success">
+          <div class="container">
+          <div class="alert-icon">
+          <i class="material-icons">check</i>
+          </div>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true"><i class="material-icons">clear</i></span>
+          </button>
+          <b></b>
+          <p >You have Successfully set your status to "'.$inout.'"</br>';
+          if($notes!=""){echo "with the following note: ".$notes."</p></div>
+          </div>";}else{
+            echo "</p></div></div>";
+          }
+            // echo "<head>\n";
+            // echo "<meta http-equiv='refresh' content=0;url=index.php>\n";
+            // echo "</head>\n";
 
         } else {
 
@@ -568,7 +569,23 @@ if ($request == 'POST') {
                 $strip_fullname = stripslashes($fullname);
             }
 
-            echo "You have entered the wrong password for $strip_fullname. Please try again.";
+
+            echo '
+            <div class="alert alert-danger">
+      <div class="container">
+        <div class="alert-icon">
+          <i class="material-icons">error_outline</i>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true"><i class="material-icons">clear</i></span>
+        </button>
+        <b>Error Alert:</b>
+        <p >You have entered the wrong password for '.$strip_fullname.' Please try again.</p>
+      </div>
+    </div>
+
+
+            ';
             //include 'footer.php';
             exit;
         }
