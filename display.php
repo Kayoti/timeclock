@@ -3,11 +3,11 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-primary">
-            <h4 class="card-title ">TimeClock</h4>
+          <div class="card-header-primary">
+
             <?php if (!isset($_GET['printer_friendly'])) { ?>
-            <p class="card-category"> <a class="nav-link" href="timeclock.php?printer_friendly=true">
-            <i class="material-icons">print</i>
+            <p class="card-title "> <a class="nav-link" href="timeclock.php?printer_friendly=true">
+            <i style="color:white;" class="material-icons">print</i>
           </a></p>
         <?php } ?>
           </div>

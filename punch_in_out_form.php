@@ -157,24 +157,30 @@ if (!isset($_GET['printer_friendly'])) {
                 echo "<textarea name='left_notes' class='form-control' maxlength='250'  rows='4' cols='50' placeholder='Notes'></textarea>";?>
               </div>
             </span>
-              <span class="bmd-form-group">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
+          </br>
+            <span class="bmd-form-group">
+            <div class="input-group form-check form-check-inline">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
 
-                    <label for="remember_me">Remeber Me</label>
-                  </span>
-                </div>
-                <?php
-
-                if (!isset($_COOKIE['remember_me'])) {
-                    echo "<input class='form-check-input' type='checkbox' name='remember_me' value='1'>\n";
-                } elseif (isset($_COOKIE['remember_me'])) {
-                    echo "<input class='form-check-input' type='checkbox' name='reset_cookie' value='1'>\n";
-                }
-                ?>
+                </span>
               </div>
-            </span>
+              <label  class="form-check-label">
+
+                <?php
+                if (!isset($_COOKIE['remember_me'])) {
+                  echo "<input class='form-check-input' type='checkbox' id='remember_me' name='remember_me' value='1'>";
+                } elseif (isset($_COOKIE['remember_me'])) {
+                  echo "<input class='form-check-input' type='checkbox' id='reset_cookie' name='reset_cookie' value='1'>";
+                }
+                ?>  Remeber Me
+                <span class="form-check-sign">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </span>
+
 
             <div class="card-footer justify-content-center">
 
