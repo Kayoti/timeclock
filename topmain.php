@@ -122,8 +122,11 @@
       </form>
       <ul class="navbar-nav">
         <li class="nav-item">
-        <p> <?php  $todaydate = date('F j, Y'); echo $todaydate; ?></p>
+        <span> <?php  $todaydate = date('F j, Y'); echo $todaydate; ?></span>
         </li>
+        <?php if (!isset($_GET['printer_friendly'])) { ?>
+        <li class="nav-item"><a class="nav-link" href='timeclock.php?printer_friendly=true' >printer friendly page</a></li>
+          <?php  }  ?>
         <li class="nav-item dropdown">
           <?php
           if (($dbexists <> "1") || (@$my_dbversion <> $dbversion)) { ?>
@@ -174,7 +177,9 @@ if ($use_client_tz == "yes") {
 
 }
 
+
 ?>
+
 <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   <i class="material-icons">notifications</i>
 
