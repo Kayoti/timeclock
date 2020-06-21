@@ -132,8 +132,13 @@ $count_notif=0;
           <?php  }  ?>
           <!--notification-->
         <li class="nav-item dropdown">
-          <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="material-icons">notifications</i><span class="notification"><?php echo $count_notif; ?></span></a>
+          <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons">notifications</i>
+            <span class="notification"><?php echo $count_notif; ?></span>
+            <p class="d-lg-none d-md-block">
+              notifications
+            </p>
+          </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 <?php
       if (($dbexists <> "1") || (@$my_dbversion <> $dbversion)) {
