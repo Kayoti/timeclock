@@ -14,19 +14,25 @@ include 'config.inc.php';
 include 'setup_timeclock.php'; // authorize and initialize
 
 $PAGE_TITLE = "Menu = $title";
-$PAGE_STYLE = <<<End_Of_HTML
-<style type="text/css">
-a:link, a:visited, a:active { color: #27408b; text-decoration: none; }
-a:hover { font-size:inherit; text-decoration:none; }
-#entry_links, #office_links, #timeclock_links, #export_links  { width:300px; margin:15px auto; font-size:13px; line-height:25px; }
-#entry_links li, #office_links li, #timeclock_links li, #export_links li { list-style:none; padding-left:10px; }
-#entry_links li:hover, #office_links li:hover, #timeclock_links li:hover, #export_links li:hover { color:#853d27; text-decoration:underline; }
-#entry_links li:hover a, #office_links li:hover a,#timeclock_links li:hover a, #export_links li:hover a { color:#853d27; font-size:inherit; }
-</style>
-End_Of_HTML;
+// $PAGE_STYLE = <<<End_Of_HTML
+// <style type="text/css">
+// a:link, a:visited, a:active { color: #27408b; text-decoration: none; }
+// a:hover { font-size:inherit; text-decoration:none; }
+// #entry_links, #office_links, #timeclock_links, #export_links  { width:300px; margin:15px auto; font-size:13px; line-height:25px; }
+// #entry_links li, #office_links li, #timeclock_links li, #export_links li { list-style:none; padding-left:10px; }
+// #entry_links li:hover, #office_links li:hover, #timeclock_links li:hover, #export_links li:hover { color:#853d27; text-decoration:underline; }
+// #entry_links li:hover a, #office_links li:hover a,#timeclock_links li:hover a, #export_links li:hover a { color:#853d27; font-size:inherit; }
+// </style>
+// End_Of_HTML;
 
 include 'header.php';
+include 'sidenav.php';
+
 ?>
+<div class="main-panel">
+
+<div class="content">
+  <div class="container-fluid">
 <ul id="entry_links">
     <li><a href="entry.php">My Time Entry</a></li>
     <li><a href="timecard.php">My Timecard</a></li>

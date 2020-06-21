@@ -123,7 +123,7 @@ if (!isset($_GET['printer_friendly'])) {
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">
-                      <i class="material-icons">email</i>
+                      <i class="material-icons">event_note</i>
                     </span>
                   </div>
                 <?php
