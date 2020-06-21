@@ -33,10 +33,18 @@ include 'sidenav.php';
 
 <div class="content">
   <div class="container-fluid">
-<ul id="entry_links">
+    <div class="col-md-4 alert mx-auto alert-primary">
+    <span>
+
+    <a href="entry.php"><i class="material-icons" style="color:white;">assignment_ind</i> My Time Entry</a></span>
+    </div>
+    <div class="col-md-4 alert mx-auto alert-warning">
+      <span><a href="timecard.php"><i class="material-icons" style="color:white;">assignment_turned_in</i> My Timecard</a></span>
+    </div>
+<!-- <ul id="entry_links">
     <li><a href="entry.php">My Time Entry</a></li>
     <li><a href="timecard.php">My Timecard</a></li>
-</ul>
+</ul> -->
 <?php
 // Construct list of links to punchclocks for each office.
 
@@ -48,7 +56,7 @@ while ($row = mysqli_fetch_array($result)) {
     if ($row_count == 1) {
         print <<<End_Of_HTML
 
-<ul id="office_links">
+
 End_Of_HTML;
     }
 
@@ -62,39 +70,41 @@ End_Of_HTML;
     #  <li><a href="punchclock.php?office=$u_officename" target="$targetname" onclick="window.open('','$targetname','resizable,scrollbars').focus();return true;">$h_officename Punchclock</a></li>
     #End_Of_HTML;
     # Uncomment following to open punchclock in current browser window.
-    print <<<End_Of_HTML
 
-  <li><a href="punchclock.php?office=$u_officename">$h_officename Punchclock</a></li>
-End_Of_HTML;
+?>
+<div class="col-md-4 alert mx-auto alert-success">
+<span><a href="punchclock.php?office=$u_officename"><i class="material-icons" style="color:white;">business</i> <?php echo $h_officename; ?> Punchclock</a></span>
+</div>
+  <!-- <li><a href="punchclock.php?office=$u_officename">$h_officename Punchclock</a></li> -->
+<?php
 }
 
 if ($row_count > 0)
-    print <<<End_Of_HTML
-
-</ul>
-
-End_Of_HTML;
-
 mysqli_free_result($result);
 
 if ($row_count == 0) {
-    print <<<End_Of_HTML
-<ul id="office_links">
+?>
+<!-- <div class="col-md-4 alert mx-auto alert-warning">
+  <span><i class="material-icons" style="color:white;">cloud_download</i> <a href="punchclock.php">Punchclock</a></span>
+</div> -->
+<!-- <ul id="office_links">
   <li><a href="punchclock.php">Punchclock</a></li>
-</ul>
-End_Of_HTML;
+</ul> -->
 
+<?php
 }
 ?>
 
-<ul id="timeclock_links">
-    <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/timeclock.php">Timeclock Main Program</a></li>
-    <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/login_reports.php">Timeclock Reports</a></li>
-    <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/login.php">Timeclock Administration</a></li>
-</ul>
-
-<ul id="export_links">
+<!-- <ul id="timeclock_links">
+    <li><a href="<?php //echo "$TIMECLOCK_URL"; ?>/timeclock.php">Timeclock Main Program</a></li>
+    <li><a href="<?php //echo "$TIMECLOCK_URL"; ?>/login_reports.php">Timeclock Reports</a></li>
+    <li><a href="<?php //echo "$TIMECLOCK_URL"; ?>/login.php">Timeclock Administration</a></li>
+</ul> -->
+<div class="col-md-4 alert mx-auto alert-warning">
+<span><a href="export.php"><i class="material-icons" style="color:white;">cloud_download</i> Export Hours</a></span>   
+</div>
+<!-- <ul id="export_links">
     <li><a href="export.php">Export Hours</a></li>
-</ul>
+</ul> -->
 
 <?php include 'footer.php'; ?>
