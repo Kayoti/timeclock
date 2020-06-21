@@ -95,6 +95,7 @@
 // }
 //
 // echo "</tr></table>\n";
+$count_notif=0;
 ?>
 <div class="main-panel">
 <!-- Navbar -->
@@ -121,70 +122,45 @@
         </div> -->
       </form>
       <ul class="navbar-nav">
+      <!--date time-->
         <li class="nav-item">
-        <span> <?php  $todaydate = date('F j, Y'); echo $todaydate; ?></span>
+        <span> <a class="nav-link" href="#" ><?php  $todaydate = date('F j, Y'); echo $todaydate; ?></a></span>
         </li>
+        <!--print friendly-->
         <?php if (!isset($_GET['printer_friendly'])) { ?>
-        <li class="nav-item"><a class="nav-link" href='timeclock.php?printer_friendly=true' >printer friendly page</a></li>
+        <li class="nav-item"><a class="nav-link" href="timeclock.php?printer_friendly=true" >printer friendly page</a></li>
           <?php  }  ?>
+          <!--notification-->
         <li class="nav-item dropdown">
-          <?php
-          if (($dbexists <> "1") || (@$my_dbversion <> $dbversion)) { ?>
           <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="material-icons">notifications</i>
-
-  <span class="notification">New</span>
-</a>
-
-<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-  <a class="dropdown-item" href="#"><p>***Your database is out of date.***<br />Upgrade it via the admin section.</p></a>
-
-</div>
-<?php }
-
-if ($date_link == "none") {
-
-if ($use_client_tz == "yes") {
-    ?>
-      <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="material-icons">notifications</i>
-
-<span class="notification">New</span>
-</a>
-
-<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-<a class="dropdown-item" href="#"><p>If the times below appear to be an hour off, click <a href='resetcookie.php' style='font-size:9px;'>here</a> to reset.<br />
-  If that doesn't work, restart your web browser and reset again.</p></a>
-
-</div>
+            <i class="material-icons">notifications</i><span class="notification"><?php echo $count_notif; ?></span></a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 <?php
-    }
-} else {if ($use_client_tz == "yes") { ?>
-  <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="material-icons">notifications</i>
-
-<span class="notification">New</span>
-</a>
-
-<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-<a class="dropdown-item" href="#"><p>If the times below appear to be an hour off, click <a href='resetcookie.php' style='font-size:9px;'>here</a> to reset.<br />
-  If that doesn't work, restart your web browser and reset again.</p></a>
-  <a href='<?php echo $date_link; ?>' style='color:#000000;font-family:Tahoma;font-size:10pt;
-          text-decoration:none;'>
-</div>
-<?php
-    }
-
-}
-
-
+      if (($dbexists <> "1") || (@$my_dbversion <> $dbversion)) {
 ?>
+            <a class="dropdown-item" href="#"><p>***Your database is out of date.***<br />Upgrade it via the admin section.</p></a>
+<?php
+        }
+          if ($date_link == "none") {
+            if ($use_client_tz == "yes") {
+?>
+                <a class="dropdown-item" href="#"><p>If the times below appear to be an hour off, click <a href='resetcookie.php' style='font-size:9px;'>here</a> to reset.<br />
+                  If that doesn't work, restart your web browser and reset again.</p></a>
+<?php
+                }
+              } else {
+                if ($use_client_tz == "yes") {
+?>
+                <a class="dropdown-item" href="#"><p>If the times below appear to be an hour off, click <a href='resetcookie.php' style='font-size:9px;'>here</a> to reset.<br />
+                  If that doesn't work, restart your web browser and reset again.</p></a>
+                  <a href='<?php echo $date_link; ?>' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
+                  </a>
+<?php
+                  }
 
-<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  <i class="material-icons">notifications</i>
-
-
-</a>
+                }
+?>
+</div>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -234,3 +210,5 @@ if ($use_client_tz == "yes") {
   </div>
 </nav>
 <!-- End Navbar -->
+<div class="content">
+  <div class="container-fluid">
