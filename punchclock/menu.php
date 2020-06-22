@@ -101,10 +101,10 @@ if ($row_count == 0) {
     <li><a href="<?php //echo "$TIMECLOCK_URL"; ?>/login.php">Timeclock Administration</a></li>
 </ul> -->
 <div class="col-md-4 alert mx-auto alert-warning">
-<span><a href="export.php"><i class="material-icons" style="color:white;">cloud_download</i> Export Hours</a></span>   
+<span><a href="export.php"><i class="material-icons" style="color:white;">cloud_download</i> Export Hours</a></span>
 </div>
 <!-- <ul id="export_links">
     <li><a href="export.php">Export Hours</a></li>
 </ul> -->
 
-<?php include 'footer.php'; ?>
+<?php include './footer.php'; ?>

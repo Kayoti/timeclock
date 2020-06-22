@@ -27,18 +27,20 @@ while ($row = mysqli_fetch_array($result)) {
             // display sortable column headings for main page //
             echo "<table class='table-hover table'>";
             echo "<thead class='text-primary'>";
-            echo "<th><a href='$current_page?sortcolumn=empfullname&sortdirection=$sortnewdirection'>Name</a></th>";
-            echo "<th><a href='$current_page?sortcolumn=inout&sortdirection=$sortnewdirection'>In/Out</a></th>";
-            echo "<th><a href='$current_page?sortcolumn=tstamp&sortdirection=$sortnewdirection'>Time</a></th>";
-            echo "<th><a href='$current_page?sortcolumn=tstamp&sortdirection=$sortnewdirection'>Date</a></th>";
+            echo "<td><a class='' href='".$current_page."?sortcolumn=empfullname&sortdirection=".$sortnewdirection."'>Name</a></td>";
+            echo "<td><a class='' href='".$current_page."?sortcolumn=inout&sortdirection=".$sortnewdirection."'>In/Out</a></td>";
+            echo "<td><a class='' href='".$current_page."?sortcolumn=tstamp&sortdirection=".$sortnewdirection."'>Time</a></td>";
+            echo "<td><a class='' href='".$current_page."?sortcolumn=tstamp&sortdirection=".$sortnewdirection."'>Date</a></td>";
             if ($display_office_name == "yes") {
-                echo "<th><ahref='$current_page?sortcolumn=office&sortdirection=$sortnewdirection'>Office</a></th>";
+                echo "<td><a class='' href='".$current_page."?sortcolumn=office&sortdirection=".$sortnewdirection."'>Office</a></td>";
             }
             if ($display_group_name == "yes") {
-                echo "<th><a href='$current_page?sortcolumn=groups&sortdirection=$sortnewdirection'>Group</a></th>";
+                echo "<td><a class='' href='".$current_page."?sortcolumn=groups&sortdirection=".$sortnewdirection."'>Group</a></td>";
             }
-            echo "<th><a href='$current_page?sortcolumn=notes&sortdirection=$sortnewdirection'><u>Notes</u></a></th>";
-            echo "</thead>";
+            echo "<td><a class='' href='".$current_page."?sortcolumn=notes&sortdirection=".$sortnewdirection."'><u>Notes</u></a></td>";
+            echo "
+
+            </thead>";
 
         } else {
             // display report name and page number of printed report above the column headings of each printed page //

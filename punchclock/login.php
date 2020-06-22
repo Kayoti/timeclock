@@ -29,79 +29,73 @@ unset($_SESSION['login_error_msg']); // reinitialize
 include 'setup_timeclock.php'; // authorize and initialize
 
 // Parse arguments.
-$emp = isset($_REQUEST['emp']) ? $_REQUEST['emp'] : null;
+$emp = isset($_POST['emp']) ? $_POST['emp'] : null;
 $empfullname = isset($_REQUEST['empfullname']) ? $_REQUEST['empfullname'] : null;
-$password = isset($_REQUEST['password']) ? $_REQUEST['password'] : null;
+$password = isset($_POST['password']) ? $_POST['password'] : null;
 
 if (!$empfullname)
     $empfullname = $emp; // from url or form entry
 
 if ($empfullname) {
     $empfullname = lookup_employee($db,$db_prefix,$empfullname);
-    //print_r($empfullname);
+    //print_r("aaa".$empfullname);
     if (!$empfullname) {
         $error_msg .= "Name was not recognized. Please re-enter your name.\n";
     }
 }
-
+include 'header.php';
+include 'sidenav.php';
 ////////////////////////////////////////
 if(is_array($empfullname)){$empfullname=$empfullname['empfullname'];}
-if (!$empfullname) {
+if ($empfullname) {
     unset($_SESSION['authenticated']);
 
     // Get employee name
 
     $PAGE_TITLE = "Login - $title";
-    $PAGE_STYLE = <<<End_Of_HTML
-<link rel="stylesheet" type="text/css" media="screen" href="css/jquery.suggest.css" />
-End_Of_HTML;
+//     $PAGE_STYLE = <<<End_Of_HTML
+// <link rel="stylesheet" type="text/css" media="screen" href="css/jquery.suggest.css" />
+// End_Of_HTML;
+//
+//     $PAGE_SCRIPT = <<<End_Of_HTML
+// <script type="text/javascript" src="scripts/jquery.suggest.js"></script>
+// <script type="text/javascript">
+// //<![CDATA[
+// $(function(){
+// 	$('#emp').suggest('suggest.ajax.php');
+// 	$('form input:first').focus();
+// });
+// //]]>
+// </script>
+// End_Of_HTML;
 
-    $PAGE_SCRIPT = <<<End_Of_HTML
-<script type="text/javascript" src="scripts/jquery.suggest.js"></script>
-<script type="text/javascript">
-//<![CDATA[
-$(function(){
-	$('#emp').suggest('suggest.ajax.php');
-	$('form input:first').focus();
-});
-//]]>
-</script>
-End_Of_HTML;
 
-    include 'header.php';
-    if ($msg)
-        print msg($msg);
-    if ($error_msg)
-        print error_msg($error_msg);
-    print <<<End_Of_HTML
 
-<div id="employee_entry_form">
-<form action="{$_SERVER['PHP_SELF']}" method="get">
-<table align="center" class="table_border" width="100%" border="0" cellpadding="3" cellspacing="0">
-  <tr>
-	<th class="rightside_heading" nowrap align="left" colspan="3"><img src="$TIMECLOCK_URL/images/icons/clock_add.png" />&nbsp;&nbsp;&nbsp;Enter your name
-	</th>
-  </tr>
-  <tr><td height="15" colspan="3"></td></tr>
-  <tr><td class="table_rows" height="25" width="20%" style="padding-left:32px;" nowrap>Employee Name:</td>
-      <td colspan="2" width="80%" style="color:red;font-family:Tahoma;font-size:10px;">
-	  <input type="text" size="25" maxlength="50" name="emp" id="emp" value="" />&nbsp;*</td></tr>
-  <tr><td height="15" colspan="3">&nbsp;</td></tr>
-  <tr><td class="table_rows" align="right" colspan="3" style="color:red;font-family:Tahoma;font-size:10px;">*&nbsp;required&nbsp;</td></tr>
-</table>
-<table align="center" width="100%" border="0" cellpadding="0" cellspacing="3" class="buttons">
-  <tr><td width="30"><input type="image" name="submit" value="Next" align="middle" src="$TIMECLOCK_URL/images/buttons/next_button.png" /></td>
-      <td><a href="index.php"><img src="$TIMECLOCK_URL/images/buttons/cancel_button.png" border="0" /></a></td></tr>
-</table>
-</form>
-</div>
 
-End_Of_HTML;
+//     print <<<End_Of_HTML
 
-    include 'footer.php';
-    exit;
-}
-
+// <div id="employee_entry_form">
+// <form action="{$_SERVER['PHP_SELF']}" method="get">
+// <table align="center" class="table_border" width="100%" border="0" cellpadding="3" cellspacing="0">
+//   <tr>
+// 	<th class="rightside_heading" nowrap align="left" colspan="3"><img src="$TIMECLOCK_URL/images/icons/clock_add.png" />&nbsp;&nbsp;&nbsp;Enter your name
+// 	</th>
+//   </tr>
+//   <tr><td height="15" colspan="3"></td></tr>
+//   <tr><td class="table_rows" height="25" width="20%" style="padding-left:32px;" nowrap>Employee Name:</td>
+//       <td colspan="2" width="80%" style="color:red;font-family:Tahoma;font-size:10px;">
+// 	  <input type="text" size="25" maxlength="50" name="emp" id="emp" value="" />&nbsp;*</td></tr>
+//   <tr><td height="15" colspan="3">&nbsp;</td></tr>
+//   <tr><td class="table_rows" align="right" colspan="3" style="color:red;font-family:Tahoma;font-size:10px;">*&nbsp;required&nbsp;</td></tr>
+// </table>
+// <table align="center" width="100%" border="0" cellpadding="0" cellspacing="3" class="buttons">
+//   <tr><td width="30"><input type="image" name="submit" value="Next" align="middle" src="$TIMECLOCK_URL/images/buttons/next_button.png" /></td>
+//       <td><a href="index.php"><img src="$TIMECLOCK_URL/images/buttons/cancel_button.png" border="0" /></a></td></tr>
+// </table>
+// </form>
+// </div>
+//
+// End_Of_HTML;
 ////////////////////////////////////////
 if ($use_passwd == 'yes') {
     $authenticated = isset($_SESSION['authenticated']) ? ($_SESSION['authenticated'] == $empfullname) : false;
@@ -125,6 +119,14 @@ if ($use_passwd == 'yes') {
 
           //  print_r($_SESSION['authenticated']);exit;
             $authenticated = true;
+            // Successful login
+            //$_SESSION['authenticated'] = $empfullname;
+
+            $return_url= strtok($return_url, '?');
+            //$return_url = preg_replace('/\bemp(fullname)?=.*?&(.*)$/', '$2', $return_url); // remove possible emp= from url
+            $return_url .= (preg_match('/[?]/', $return_url) ? '&' : '?') . "emp=" . rawurlencode($empfullname); // add emp= argument to url
+             //print_r($return_url);exit;
+            exit_next($return_url);
         } else {
             $error_msg .= "Password is incorrect. Please try again.\n";
         }
@@ -148,55 +150,118 @@ if ($use_passwd == 'yes') {
         unset($_SESSION['authenticated']);
 
         // Authenticate employee
-        $PAGE_TITLE = "Login - $title";
-        $PAGE_SCRIPT = <<<End_Of_HTML
-<script type="text/javascript">$(function(){ $('form input:first').focus(); });</script>
-End_Of_HTML;
-        include 'header.php';
-        if ($msg)
-            print msg($msg);
-        if ($error_msg)
-            print error_msg($error_msg);
-        print <<<End_Of_HTML
-<div id="password_entry_form">
-<form action="{$_SERVER['PHP_SELF']}" method="post">
-<table align=center class=table_border width=100% border=0 cellpadding=3 cellspacing=0>
-  <tr>
-	<th class=rightside_heading nowrap align=left colspan=3><img src='$TIMECLOCK_URL/images/icons/clock_add.png' />&nbsp;&nbsp;&nbsp;Enter your password
-	</th>
-  </tr>
-  <tr><td height=15 colspan="3"></td></tr>
-  <tr><th colspan="3" align="left" style='padding-left:32px;'>$h_name_header</th></tr>
-  <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Password:</td>
-      <td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;'>
-	  <input type='password' size='25' maxlength='50' name='password' value="" />&nbsp;*</td></tr>
-  <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap colspan="3">
-	<a href="password.php?forgot_password&emp=$u_empfullname">Forgot your password</a>
-        &nbsp;&nbsp;
-	<a href="password.php?emp=$u_empfullname">Change your password</a></td></tr>
-  <tr><td height=15 colspan="3">&nbsp;</td></tr>
-  <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>
-</table>
-<table align=center width=100% border=0 cellpadding=0 cellspacing=3 class="buttons">
-  <tr><td width=30><input type='image' name='submit' value='Next' align='middle' src='$TIMECLOCK_URL/images/buttons/next_button.png' /></td>
-      <td><a href='?emp='><img src='$TIMECLOCK_URL/images/buttons/cancel_button.png' border='0' /></a></td></tr>
-</table>
-<input type="hidden" name="empfullname" value="$h_empfullname" />
-</form>
-</div>
-End_Of_HTML;
-        include 'footer.php';
-        exit;
+//         $PAGE_TITLE = "Login - $title";
+//         $PAGE_SCRIPT = <<<End_Of_HTML
+// <script type="text/javascript">$(function(){ $('form input:first').focus(); });</script>
+// End_Of_HTML;
+        //include 'header.php';
+        // if ($msg)
+        //     print msg($msg);
+        // if ($error_msg)
+        //     print error_msg($error_msg);
+//         print <<<End_Of_HTML
+// <div id="password_entry_form">
+// <form action="{$_SERVER['PHP_SELF']}" method="post">
+// <table align=center class=table_border width=100% border=0 cellpadding=3 cellspacing=0>
+//   <tr>
+// 	<th class=rightside_heading nowrap align=left colspan=3><img src='$TIMECLOCK_URL/images/icons/clock_add.png' />&nbsp;&nbsp;&nbsp;Enter your password
+// 	</th>
+//   </tr>
+//   <tr><td height=15 colspan="3"></td></tr>
+//   <tr><th colspan="3" align="left" style='padding-left:32px;'>$h_name_header</th></tr>
+//   <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Password:</td>
+//       <td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;'>
+// 	  <input type='password' size='25' maxlength='50' name='password' value="" />&nbsp;*</td></tr>
+//   <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap colspan="3">
+// 	<a href="password.php?forgot_password&emp=$u_empfullname">Forgot your password</a>
+//         &nbsp;&nbsp;
+// 	<a href="password.php?emp=$u_empfullname">Change your password</a></td></tr>
+//   <tr><td height=15 colspan="3">&nbsp;</td></tr>
+//   <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>
+// </table>
+// <table align=center width=100% border=0 cellpadding=0 cellspacing=3 class="buttons">
+//   <tr><td width=30><input type='image' name='submit' value='Next' align='middle' src='$TIMECLOCK_URL/images/buttons/next_button.png' /></td>
+//       <td><a href='?emp='><img src='$TIMECLOCK_URL/images/buttons/cancel_button.png' border='0' /></a></td></tr>
+// </table>
+// <input type="hidden" name="empfullname" value="$h_empfullname" />
+// </form>
+// </div>
+// End_Of_HTML;
+
     }
 }
 
-////////////////////////////////////////
-// Successful login
-$_SESSION['authenticated'] = $empfullname;
 
-$return_url= strtok($return_url, '?');
-//$return_url = preg_replace('/\bemp(fullname)?=.*?&(.*)$/', '$2', $return_url); // remove possible emp= from url
-$return_url .= (preg_match('/[?]/', $return_url) ? '&' : '?') . "emp=" . rawurlencode($empfullname); // add emp= argument to url
- //print_r($return_url);exit;
-exit_next($return_url);
+}
+?>
+  <div class="main-panel">
+     <div class="content">
+       <div class="container-fluid">
+<div class="row">
+     <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
+       <form class="form" name='timcardform' id="timcardform" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+         <div class="card card-login card-hidden">
+           <div class="card-header card-header-primary text-center">
+             <h4 class="card-title">Please Sign-In Below</h4>
+             <!-- <div class="social-line">
+               <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                 <i class="fa fa-facebook-square"></i>
+               </a>
+               <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                 <i class="fa fa-twitter"></i>
+               </a>
+               <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                 <i class="fa fa-google-plus"></i>
+               </a>
+             </div> -->
+           </div>
+           <div class="card-body ">
+             <!-- <p class="card-description text-center">Or Be Classical</p> -->
+             <span class="bmd-form-group">
+               <div class="input-group">
+                 <div class="input-group-prepend">
+                   <span class="input-group-text">
+                     <i class="material-icons">face</i>
+                   </span>
+                 </div>
+                 <input class='form-control'placeholder='Name' type='text' maxlength="50" name="emp" id="emp">;
+               </div>
+
+             </span>
+             <span class="bmd-form-group">
+               <div class="input-group">
+                 <div class="input-group-prepend">
+                   <span class="input-group-text">
+                     <i class="material-icons">lock_outline</i>
+                   </span>
+                 </div>
+               <?php
+               //if ($use_passwd == "yes") {
+                   echo "<input class='form-control'placeholder='Password' type='password' name='password' maxlength='50'>\n";
+               //}
+                ?>
+               </div>
+             </span>
+             <input type="hidden" name="empfullname" value="<?php if(isset($h_empfullname)){echo $h_empfullname;} ?>" />
+           <div class="card-footer justify-content-center">
+
+             <button id="submit_button" name="submit" class="btn btn-rose btn-link btn-lg"  type="submit">Submit</button>
+           </div>
+           <div id="errormessage" class="col-md-12">
+             <?php
+             if ($msg)print msg($msg);
+             if ($error_msg)print error_msg($error_msg);
+                 ?>
+         </div>
+         </div>
+
+           </div>
+
+
+       </form>
+       </div>
+   </div>
+<?php
+////////////////////////////////////////
+include 'footer.php';
 ?>
