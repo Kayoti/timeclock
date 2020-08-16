@@ -1,51 +1,33 @@
-<aside>
-          <div id="sidebar"  class="nav-collapse ">
-              <!-- sidebar menu start-->
-              <ul class="sidebar-menu">
-                  <li class="active">
-                      <a class="" href="../index.php">
-                          <i class="icon_house_alt"></i>
-                          <span>Home</span>
-                      </a>
-                  </li>
-				  <li class="sub-menu">
-          <?php
-          if ($use_reports_password == "yes") {
+<div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+    <!--
+      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
-                      echo '<a href="../login_reports.php" class="">';
-           }
-            elseif ($use_reports_password == "no") {
-               echo '<a href="index.php" class="">';
-            }
-          ?>
-                          <i class="icon_document_alt"></i>
-                          <span>Reports</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
-                      </a>
+      Tip 2: you can also add an image using data-image tag
+  -->
+    <div class="logo"><a href="index.php" class="simple-text logo-normal">
+        <img border=0 src='<?php echo "../".$logo; ?>'>
+      </a></div>
+    <div class="sidebar-wrapper">
+      <ul class="nav">
+        <li class="nav-item active  ">
+          <a class="nav-link" href="../index.php">
+            <i class="material-icons">dashboard</i>
+            <p>Dashboard</p>
+          </a>
+        </li>
 
-                  </li>
-                  <li class="sub-menu">
-                      <a href="../login.php" class="">
-                          <i class="icon_desktop"></i>
-                          <span>Administration</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
-                      </a>
-
-                  </li>
-                 <li class="sub-menu">
-                      <a href="punchclock/menu.php" class="">
-                          <i class="icon_table"></i>
-                          <span>Punch Clock</span>
-                          <span class="menu-arrow arrow_carrot-right"></span>
-                      </a>
-
-                  </li>
-
-
-
-
-
-              </ul>
-              <!-- sidebar menu end-->
-          </div>
-      </aside>
+        <li class="nav-item ">
+          <a class="nav-link" href="../punch_in_out_form.php">
+            <i class="material-icons">content_paste</i>
+            <p>Punch In/Out</p>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="../punchclock/menu.php">
+            <i class="material-icons">library_books</i>
+            <p>Timecard</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>

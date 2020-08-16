@@ -55,10 +55,10 @@ if (($use_client_tz == "yes") && ($use_server_tz == "yes")) {
     exit;
 }
 
-echo "<head>\n";
+//echo "<head>\n";
 if ($use_client_tz == "yes") {
     if (!isset($_COOKIE['tzoffset'])) {
         include '../tzoffset.php';
-        echo "<meta http-equiv='refresh' content='0;URL=index.php'>\n";
+        //echo "<meta http-equiv='refresh' content='0;URL=index.php'>\n";
     }
 }
