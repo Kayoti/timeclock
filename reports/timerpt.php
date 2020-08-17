@@ -37,7 +37,8 @@ if ($request == 'GET') {
     if ($use_reports_password == "yes") {
         include '../admin/topmain.php';
     } else {
-        include 'topmain.php';
+      include 'sidenav.php';
+      include 'topmain.php';
     }
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
@@ -126,7 +127,7 @@ if ($request == 'GET') {
     echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle'
                       src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png'
                       border='0'></td></tr></table></form></td></tr>\n";
-    include '../footer.php';
+    include './footer.php';
     exit;
 
 } else {
@@ -209,7 +210,8 @@ if ($request == 'GET') {
             if ($use_reports_password == "yes") {
                 include '../admin/topmain.php';
             } else {
-                include 'topmain.php';
+              include 'sidenav.php';
+              include 'topmain.php';
             }
             echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
             echo "  <tr valign=top>\n";
@@ -231,7 +233,8 @@ if ($request == 'GET') {
             if ($use_reports_password == "yes") {
                 include '../admin/topmain.php';
             } else {
-                include 'topmain.php';
+              include 'sidenav.php';
+              include 'topmain.php';
             }
             echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
             echo "  <tr valign=top>\n";
@@ -249,7 +252,8 @@ if ($request == 'GET') {
             if ($use_reports_password == "yes") {
                 include '../admin/topmain.php';
             } else {
-                include 'topmain.php';
+              include 'sidenav.php';
+              include 'topmain.php';
             }
             echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
             echo "  <tr valign=top>\n";
@@ -325,7 +329,8 @@ if ($request == 'GET') {
             if ($use_reports_password == "yes") {
                 include '../admin/topmain.php';
             } else {
-                include 'topmain.php';
+              include 'sidenav.php';
+              include 'topmain.php';
             }
             echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
             echo "  <tr valign=top>\n";
@@ -343,7 +348,8 @@ if ($request == 'GET') {
             if ($use_reports_password == "yes") {
                 include '../admin/topmain.php';
             } else {
-                include 'topmain.php';
+              include 'sidenav.php';
+              include 'topmain.php';
             }
             echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
             echo "  <tr valign=top>\n";
@@ -370,7 +376,8 @@ if ($request == 'GET') {
                     if ($use_reports_password == "yes") {
                         include '../admin/topmain.php';
                     } else {
-                        include 'topmain.php';
+                      include 'sidenav.php';
+                      include 'topmain.php';
                     }
                     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
                     echo "  <tr valign=top>\n";
@@ -497,7 +504,7 @@ if ($request == 'GET') {
         echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle'
                       src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png'
                       border='0'></td></tr></table></form></td></tr>\n";
-        include '../footer.php';
+        include './footer.php';
         exit;
     }
 
